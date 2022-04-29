@@ -23,51 +23,6 @@ Before(
   },
 );
 
-BeforeAll(
-  {
-    timeout: 60 * 1000,
-  },
-  async function () {
-    const browser = await puppeteer.launch({
-      headless: false,
-      slowMo: 50,
-    });
-    const page = await browser.newPage();
-    this.browser = browser;
-    this.page = page;
-
-    await this.page.goto('http://qamid.tmweb.ru/client/index.php', {
-      setTimeout: 20000,
-    });
-    await clickElement(
-      page,
-      'nav > a:nth-child(4) > span.page-nav__day-number',
-    );
-    await clickElement(
-      page,
-      'main > section:nth-child(3) > div:nth-child(2) > ul > li > a',
-    );
-    await page.waitForSelector('h1', {
-      visible: true,
-    });
-    await clickElement(
-      page,
-      'main > section div:nth-child(1) > span:nth-child(8)',
-    );
-    await clickElement(page, 'button');
-    await page.waitForNavigation();
-    await page.waitForSelector('h1', {
-      timeout: 30 * 1000,
-    });
-    await clickElement(page, 'button');
-    await page.waitForSelector('h1');
-
-    if (this.browser) {
-      await this.browser.close();
-    }
-  },
-);
-
 After(async function () {
   if (this.browser) {
     await this.browser.close();
